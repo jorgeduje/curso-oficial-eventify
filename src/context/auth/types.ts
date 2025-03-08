@@ -1,14 +1,23 @@
+import { AuthError, Session, User } from "@supabase/supabase-js";
 import { ReactNode } from "react";
 
 export interface AuthState {
-  user: null;
-  session: null;
+  user: User | null;
+  session: Session | null;
   loading: boolean;
 }
 
 export interface AuthContextType extends AuthState {
-  singUp: () => void;
-  signIn: () => void;
+  signUp: (
+    email: string,
+    password: string
+  ) => Promise<{ error: AuthError | null }>;
+
+  signIn: (
+    email: string,
+    password: string
+  ) => Promise<{ error: AuthError | null }>;
+  signOut: () => Promise<void>;
 }
 
 export interface AuthProviderProps {

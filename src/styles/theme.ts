@@ -23,6 +23,7 @@ const theme = createTheme({
       light: "#ff7a9e",
       dark: "#c60055",
     },
+    divider: "rgba(143, 155, 179, 0.2)",
   },
   typography: {
     fontFamily: '"Poppins", "Roboto", "Helvetica", "Arial", sans-serif',

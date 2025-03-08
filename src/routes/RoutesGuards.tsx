@@ -1,11 +1,12 @@
 import { FC } from "react";
 import { Navigate, Outlet } from "react-router";
 import LoadingScreen from "../components/loadingScreen/LoadingScreen";
+import { useAuth } from "../context/auth/useAuth";
 
 export const ProtectedRoute: FC = () => {
   // user, loading
-  let loading = false;
-  let user = true;
+
+  const { user, loading } = useAuth();
 
   if (loading) {
     return <LoadingScreen />;
@@ -18,9 +19,8 @@ export const ProtectedRoute: FC = () => {
 
 export const PublicRoute: FC = () => {
   // user, loading
-  let loading = false;
-  let user = true;
 
+  const { user, loading } = useAuth();
   if (loading) {
     return <LoadingScreen />;
   }
