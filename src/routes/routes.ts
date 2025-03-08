@@ -6,8 +6,13 @@ interface AppRoute {
 }
 
 const Home = lazy(() => import("../pages/home/Home"));
+const Login = lazy(() => import("../pages/login/Login"));
+const Register = lazy(() => import("../pages/register/Register"));
 
 export const routes: { public: AppRoute[]; protected: AppRoute[] } = {
-  public: [],
+  public: [
+    { path: "/login", element: Login },
+    { path: "/register", element: Register },
+  ],
   protected: [{ path: "/", element: Home }],
 };
