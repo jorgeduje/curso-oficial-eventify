@@ -7,3 +7,13 @@ export interface RegisterFormValues {
   password: string;
   confirmPassword: string;
 }
+
+export interface AppHeaderProps {
+  handleDrawerToggle: () => void;
+}
+
+export interface SidebarProps {
+  mobileOpen: boolean;
+  handleDrawerToggle: () => void;
+  drawerWidth: number;
+}
