@@ -24,7 +24,7 @@ export const Layout = () => {
       <AppHeader handleDrawerToggle={handleDrawerToggle} />
       {/* Sidebar */}
       <Sidebar
-        drawerWidth={2}
+        drawerWidth={drawerWidth}
         handleDrawerToggle={handleDrawerToggle}
         mobileOpen={mobileOpen}
       />
