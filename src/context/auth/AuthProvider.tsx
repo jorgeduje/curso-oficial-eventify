@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from "react";
 import { AuthContext } from "./AuthContext";
-import { AuthProviderProps, AuthState } from "./types";
+import { AuthProviderProps, AuthState, UserMetadata } from "./types";
 import { supabase } from "../../services/supabaseClient";
 import { AuthError } from "@supabase/supabase-js";
 
@@ -71,6 +71,26 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
     await supabase.auth.signOut();
   };
 
-  const value = { ...authState, signUp, signIn, signOut };
+  const updateUserMetadata = async (metadata: UserMetadata) => {
+    try {
+      const { data, error } = await supabase.auth.updateUser({
+        data: metadata,
+      });
+      if (error) {
+        console.error("error al actualizar el usuario", error);
+        return { error, data: null };
+      }
+      setAuthState((prevState) => ({
+        ...prevState,
+        user: data.user,
+      }));
+      return { error: null, data };
+    } catch (error) {
+      console.error("error al actualizar el usuario", error);
+      return { error: error as AuthError, data: null };
+    }
+  };
+
+  const value = { ...authState, signUp, signIn, signOut, updateUserMetadata };
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
