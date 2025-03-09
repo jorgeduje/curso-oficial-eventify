@@ -3,6 +3,7 @@ import { routes } from "./routes";
 import { createElement, Suspense } from "react";
 import LoadingScreen from "../components/loadingScreen/LoadingScreen";
 import { ProtectedRoute, PublicRoute } from "./RoutesGuards";
+import { Layout } from "../layouts/Layout";
 
 export const AppRouter = () => {
   return (
@@ -19,14 +20,16 @@ export const AppRouter = () => {
             ))}
           </Route>
 
-          <Route element={<ProtectedRoute />}>
-            {routes.protected.map((route) => (
-              <Route
-                key={route.path}
-                path={route.path}
-                element={route.element && createElement(route.element)}
-              />
-            ))}
+          <Route element={<Layout />}>
+            <Route element={<ProtectedRoute />}>
+              {routes.protected.map((route) => (
+                <Route
+                  key={route.path}
+                  path={route.path}
+                  element={route.element && createElement(route.element)}
+                />
+              ))}
+            </Route>
           </Route>
         </Routes>
       </Suspense>
