@@ -8,7 +8,9 @@ import {
   Paper,
   TextField,
   Typography,
+  Link,
 } from "@mui/material";
+import Grid from "@mui/material/Grid2";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import { Controller, useForm } from "react-hook-form";
 
@@ -20,6 +22,8 @@ import { useState } from "react";
 import { useAuth } from "../../context/auth/useAuth";
 import { toast } from "sonner";
 import { loginSchema } from "../../validations/schemas";
+import { Link as RouterLink } from "react-router";
+
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
@@ -143,6 +147,13 @@ const Login = () => {
                 "Iniciar sesion"
               )}
             </Button>
+            <Grid container justifyContent={"center"}>
+              <Grid>
+                <Link component={RouterLink} to="/register" variant="body2">
+                  ¿No tienes cuenta? Registrate
+                </Link>
+              </Grid>
+            </Grid>
           </Box>
         </Paper>
       </Box>
