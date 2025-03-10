@@ -16,3 +16,8 @@ export const registerSchema = z
     message: "las contreaseñas no coinciden",
     path: ["confirmPassword"],
   });
+
+export const profileSchema = z.object({
+  full_name: z.string().min(1, "El nombre es obligatorio"),
+  phone: z.string().optional(),
+});

@@ -1,17 +1,25 @@
-import { ChangeEvent, useRef, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { useAuth } from "../../context/auth/useAuth";
 import {
   Avatar,
   Box,
+  Button,
   CircularProgress,
+  Divider,
   IconButton,
   Paper,
+  TextField,
   Typography,
 } from "@mui/material";
 import Grid from "@mui/material/Grid2";
-import { PhotoCamera } from "@mui/icons-material";
+import { Edit, PhotoCamera, Save } from "@mui/icons-material";
 import { toast } from "sonner";
 import { supabase } from "../../services/supabaseClient";
+import { Controller, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { profileSchema } from "../../validations/schemas";
+import { ProfileFormValues } from "../../types";
+
 const Settings = () => {
   const { user, updateUserMetadata } = useAuth();
   const [uploading, setUploading] = useState(false);
@@ -21,6 +29,32 @@ const Settings = () => {
   const handleAvatarClick = () => {
     fileInputRef.current?.click();
   };
+
+  const {
+    control,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    reset,
+  } = useForm({
+    resolver: zodResolver(profileSchema),
+    defaultValues: {
+      full_name: "",
+      phone: "",
+    },
+  });
+
+  useEffect(() => {
+    if (user) {
+      const metadata = user.user_metadata || {};
+      reset({
+        full_name: metadata.full_name || "",
+        phone: metadata.phone || "",
+      });
+      if (metadata.avatar_url) {
+        setAvatarUrl(metadata.avatar_url);
+      }
+    }
+  }, [user, reset]);
 
   const uploadAvatar = async (file: File) => {
     try {
@@ -80,6 +114,33 @@ const Settings = () => {
       uploadAvatar(file);
     }
   };
+
+  const onsubmit = async (data: ProfileFormValues) => {
+    try {
+      if (!user) return;
+
+      const { error } = await updateUserMetadata({
+        full_name: data.full_name,
+        phone: data.phone,
+      });
+      if (error) {
+        console.error("ocurrio un error al actualizar el perfil");
+        throw error;
+      }
+      toast.success("perfil actualizado correctamente");
+      setEditing(false);
+    } catch (error) {
+      console.error("ocurrio un error al actualizar el perfil", error);
+      toast.error("error al actualizar el perfil");
+    }
+  };
+  const handleEditingToggle = () => {
+    if (editing) {
+      handleSubmit(onsubmit)();
+    } else {
+      setEditing(true);
+    }
+  };
   return (
     <Box
       sx={{
@@ -121,7 +182,7 @@ const Settings = () => {
                 }}
               >
                 {user?.user_metadata?.full_name
-                  ? user?.user_metadata?.full_name.chartAt(0).toUpperCase()
+                  ? user?.user_metadata?.full_name?.charAt(0).toUpperCase()
                   : "?"}
               </Avatar>
               {uploading && (
@@ -164,6 +225,79 @@ const Settings = () => {
               accept="image/*"
               onChange={handleFileChange}
             />
+          </Grid>
+          <Grid size={{ xs: 12, md: 8 }}>
+            <Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  mb: 3,
+                  flexDirection: { xs: "column", sm: "row" },
+                  gap: "10px",
+                }}
+              >
+                <Typography variant="h6" fontWeight={"medium"}>
+                  Informacion general
+                </Typography>
+                <Button
+                  variant={editing ? "contained" : "outlined"}
+                  startIcon={editing ? <Save /> : <Edit />}
+                  disabled={isSubmitting}
+                  onClick={handleEditingToggle}
+                >
+                  {editing ? "Guardar" : "Editar"}
+                </Button>
+              </Box>
+              <Divider />
+              <Grid container spacing={2}>
+                <Grid size={12}>
+                  <Controller
+                    name="full_name"
+                    control={control}
+                    render={({ field }) => (
+                      <TextField
+                        {...field}
+                        fullWidth
+                        label="Nombre completo"
+                        disabled={!editing || isSubmitting}
+                        variant="outlined"
+                        error={!!errors.full_name}
+                        helperText={errors.full_name?.message}
+                      />
+                    )}
+                  />
+                </Grid>
+                <Grid size={12}>
+                  <TextField
+                    fullWidth
+                    label="Correo electronico"
+                    disabled={true}
+                    value={user?.email || ""}
+                    variant="outlined"
+                    helperText={"El correo no se puede cambiar"}
+                  />
+                </Grid>
+                <Grid size={12}>
+                  <Controller
+                    name="phone"
+                    control={control}
+                    render={({ field }) => (
+                      <TextField
+                        {...field}
+                        fullWidth
+                        label="Telefono"
+                        disabled={!editing || isSubmitting}
+                        variant="outlined"
+                        error={!!errors.phone}
+                        helperText={errors.phone?.message}
+                      />
+                    )}
+                  />
+                </Grid>
+              </Grid>
+            </Box>
           </Grid>
         </Grid>
       </Paper>
