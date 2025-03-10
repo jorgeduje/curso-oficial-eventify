@@ -63,7 +63,7 @@ const Settings = () => {
       const fileExt = file.name.split(".").pop();
       const fileName = `${user.id}-${Date.now()}.${fileExt}`;
       const filePath = `${fileName}`;
-      const { error } = supabase.storage
+      const { error } = await supabase.storage
         .from("avatars")
         .upload(filePath, file, {
           upsert: true,
