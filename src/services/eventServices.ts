@@ -14,7 +14,7 @@ export const eventServices = {
       title: event.title,
       start: new Date(event.start_time),
       end: new Date(event.end_time),
-      description: event.desciption || "",
+      description: event.description || "",
     }));
   },
   async createEvent(event: CalendarEvent): Promise<EventDTO> {
@@ -53,7 +53,7 @@ export const eventServices = {
 
     const eventData: Partial<EventDTO> = {
       title: event.title,
-      desciption: event.description || "",
+      description: event.description || "",
       start_time: adjustedStart.toISOString(),
       end_time: adjustedEnd.toISOString(),
     };
@@ -93,7 +93,7 @@ export const eventServices = {
       title: event.title,
       start: new Date(event.start_time),
       end: new Date(event.end_time),
-      description: event.desciption || "",
+      description: event.description || "",
     };
   },
 };

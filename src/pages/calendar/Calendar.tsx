@@ -8,11 +8,33 @@ import { useCalendarStyles } from "../../components/calendar/hooks/useCalendarSt
 import FullCalendar from "@fullcalendar/react";
 import { useCalendarEvents } from "../../components/calendar/hooks/useCalendarEvents";
 import { CalendarHeader } from "../../components/calendar/CalendarHeader";
+import { EventForm } from "../../components/calendar/EventForm";
+import { useEventForm } from "../../components/calendar/hooks/useEventForm";
 const Calendar = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const styles = useCalendarStyles(theme, isMobile);
-  const { loading, events } = useCalendarEvents();
+  const {
+    loading,
+    events,
+    createEvent,
+    updateEvent,
+    deleteEvent,
+    handleEventChange,
+  } = useCalendarEvents();
+
+  const {
+    form,
+    openForm,
+    setOpenForm,
+    resetForm,
+    currenEventId,
+    setCurrentEventId,
+    handleCloseForm,
+    handleOpenNewForm,
+    handleDateSelect,
+    handleEventClick,
+  } = useEventForm();
 
   return (
     <Box sx={styles.container}>
@@ -45,7 +67,7 @@ const Calendar = () => {
             events={events}
             // select={handleDateSelect}
             // eventClick={handleEventClick}
-            // eventChange={handleEventChange}
+            eventChange={handleEventChange}
             height="100%"
             locale={esLocale}
             viewClassNames={isMobile ? "fc-mobile-view" : ""}
@@ -76,6 +98,8 @@ const Calendar = () => {
           />
         </Box>
       </Paper>
+      <EventForm open={openForm} />
+      {/* DeleteConfimation */}
     </Box>
   );
 };

@@ -1,5 +1,14 @@
-import React from "react";
+import { FC } from "react";
+import { EventFormProps } from "../../types";
 
-export const EventForm = () => {
+export const EventForm: FC<EventFormProps> = ({
+  open,
+  onclose,
+  onSubmit,
+  form,
+  isEditing,
+  loading,
+  onDelete,
+}) => {
   return <div>EventForm</div>;
 };

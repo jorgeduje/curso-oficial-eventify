@@ -34,7 +34,7 @@ export interface CalendarEvent {
 export interface EventDTO {
   id: string;
   title: string;
-  desciption?: string;
+  description?: string;
   start_time: string;
   end_time: string;
   user_id?: string;
@@ -43,3 +43,11 @@ export interface EventDTO {
 export interface CalendarHeaderProps {
   onNewEvent: () => void;
 }
+
+export interface EventFormValues {
+  title: string;
+  start: Date;
+  end: Date;
+  description?: string;
+}
+export interface EventFormProps {}
