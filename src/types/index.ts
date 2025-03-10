@@ -17,3 +17,8 @@ export interface SidebarProps {
   handleDrawerToggle: () => void;
   drawerWidth: number;
 }
+
+export interface ProfileFormValues {
+  full_name: string;
+  phone?: string;
+}
