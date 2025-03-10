@@ -22,3 +22,24 @@ export interface ProfileFormValues {
   full_name: string;
   phone?: string;
 }
+
+export interface CalendarEvent {
+  id?: string;
+  title: string;
+  start: Date;
+  end: Date;
+  description?: string;
+}
+
+export interface EventDTO {
+  id: string;
+  title: string;
+  desciption?: string;
+  start_time: string;
+  end_time: string;
+  user_id?: string;
+}
+
+export interface CalendarHeaderProps {
+  onNewEvent: () => void;
+}

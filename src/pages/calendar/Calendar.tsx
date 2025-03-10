@@ -6,14 +6,18 @@ import listPlugin from "@fullcalendar/list";
 import esLocale from "@fullcalendar/core/locales/es";
 import { useCalendarStyles } from "../../components/calendar/hooks/useCalendarStyles";
 import FullCalendar from "@fullcalendar/react";
+import { useCalendarEvents } from "../../components/calendar/hooks/useCalendarEvents";
+import { CalendarHeader } from "../../components/calendar/CalendarHeader";
 const Calendar = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const styles = useCalendarStyles(theme, isMobile);
+  const { loading, events } = useCalendarEvents();
+
   return (
     <Box sx={styles.container}>
       <Paper elevation={0} sx={styles.paper}>
-        {/* HeaderCalendar  */}
+        <CalendarHeader onNewEvent={() => {}} />
         <Box sx={styles.calendarContainer}>
           <FullCalendar
             plugins={[
@@ -38,7 +42,7 @@ const Calendar = () => {
             selectMirror={true}
             dayMaxEvents={true}
             weekends={true}
-            // events={events}
+            events={events}
             // select={handleDateSelect}
             // eventClick={handleEventClick}
             // eventChange={handleEventChange}
