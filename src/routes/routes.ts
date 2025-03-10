@@ -5,7 +5,7 @@ interface AppRoute {
   element?: LazyExoticComponent<ComponentType<object>> | ComponentType<object>;
 }
 
-const Home = lazy(() => import("../pages/home/Home"));
+const Calendar = lazy(() => import("../pages/calendar/Calendar"));
 const Login = lazy(() => import("../pages/login/Login"));
 const Register = lazy(() => import("../pages/register/Register"));
 const Dashboard = lazy(() => import("../pages/dasboard/Dashboard"));
@@ -16,7 +16,7 @@ export const routes: { public: AppRoute[]; protected: AppRoute[] } = {
     { path: "/register", element: Register },
   ],
   protected: [
-    { path: "/", element: Home },
+    { path: "/", element: Calendar },
     { path: "/dashboard", element: Dashboard },
     { path: "/settings", element: Settings },
   ],
