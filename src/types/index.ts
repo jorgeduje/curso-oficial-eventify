@@ -1,3 +1,5 @@
+import { UseFormReturn } from "react-hook-form";
+
 export interface LoginFormValues {
   email: string;
   password: string;
@@ -50,4 +52,18 @@ export interface EventFormValues {
   end: Date;
   description?: string;
 }
-export interface EventFormProps {}
+export interface EventFormProps {
+  open: boolean;
+  onclose: () => void;
+  onSubmit: (data: EventFormValues) => Promise<void>;
+  form: UseFormReturn<EventFormValues>;
+  isEditing: boolean;
+  loading: boolean;
+  onDelete: () => void;
+}
+export interface DeleteConfirmationProps {
+  open: boolean;
+  onClose: () => void;
+  onConfirm: () => Promise<void>;
+  loading: boolean;
+}

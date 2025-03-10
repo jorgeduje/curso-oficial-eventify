@@ -10,10 +10,17 @@ import { useCalendarEvents } from "../../components/calendar/hooks/useCalendarEv
 import { CalendarHeader } from "../../components/calendar/CalendarHeader";
 import { EventForm } from "../../components/calendar/EventForm";
 import { useEventForm } from "../../components/calendar/hooks/useEventForm";
+import { useCallback, useState } from "react";
+import { EventClickArg } from "@fullcalendar/core/index.js";
+import { EventFormValues } from "../../types";
+import { DeleteConfirmation } from "../../components/calendar/DeleteConfirmation";
 const Calendar = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const styles = useCalendarStyles(theme, isMobile);
+
+  const [openDelete, setOpenDelete] = useState<boolean>(false);
+
   const {
     loading,
     events,
@@ -27,19 +34,51 @@ const Calendar = () => {
     form,
     openForm,
     setOpenForm,
-    resetForm,
     currenEventId,
-    setCurrentEventId,
     handleCloseForm,
     handleOpenNewForm,
     handleDateSelect,
     handleEventClick,
   } = useEventForm();
 
+  const handleClick = useCallback(
+    (clickInfo: EventClickArg) => {
+      handleEventClick(clickInfo, events);
+    },
+    [handleEventClick, events]
+  );
+
+  const onSubmit = async (data: EventFormValues) => {
+    if (currenEventId) {
+      const updatedEvent = { ...data, id: currenEventId };
+      const success = await updateEvent(updatedEvent);
+      if (success) {
+        setOpenForm(false);
+      }
+    } else {
+      const success = await createEvent(data);
+      if (success) {
+        setOpenForm(false);
+      }
+    }
+  };
+
+  const handleDeleteConfirm = () => {
+    setOpenDelete(true);
+  };
+  const handleDeleteEvent = async () => {
+    if (!currenEventId) return;
+
+    const success = await deleteEvent(currenEventId);
+    if (success) {
+      setOpenDelete(false);
+      setOpenForm(false);
+    }
+  };
   return (
     <Box sx={styles.container}>
       <Paper elevation={0} sx={styles.paper}>
-        <CalendarHeader onNewEvent={() => {}} />
+        <CalendarHeader onNewEvent={handleOpenNewForm} />
         <Box sx={styles.calendarContainer}>
           <FullCalendar
             plugins={[
@@ -65,8 +104,8 @@ const Calendar = () => {
             dayMaxEvents={true}
             weekends={true}
             events={events}
-            // select={handleDateSelect}
-            // eventClick={handleEventClick}
+            select={handleDateSelect}
+            eventClick={handleClick}
             eventChange={handleEventChange}
             height="100%"
             locale={esLocale}
@@ -98,8 +137,22 @@ const Calendar = () => {
           />
         </Box>
       </Paper>
-      <EventForm open={openForm} />
+      <EventForm
+        open={openForm}
+        onSubmit={onSubmit}
+        onclose={handleCloseForm}
+        isEditing={!!currenEventId}
+        loading={loading}
+        form={form}
+        onDelete={handleDeleteConfirm}
+      />
       {/* DeleteConfimation */}
+      <DeleteConfirmation
+        loading={loading}
+        onClose={() => setOpenDelete(false)}
+        open={openDelete}
+        onConfirm={handleDeleteEvent}
+      />
     </Box>
   );
 };
