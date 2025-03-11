@@ -23,7 +23,7 @@
     "@mui/material": "^6.4.7",
     "@mui/x-date-pickers": "^7.27.3",
     "@supabase/supabase-js": "^2.49.1",
-    "date-fns": "^4.1.0",
+    "date-fns": "^2.29.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.54.2",

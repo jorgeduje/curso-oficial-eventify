@@ -59,7 +59,7 @@ export interface EventFormProps {
   form: UseFormReturn<EventFormValues>;
   isEditing: boolean;
   loading: boolean;
-  onDelete: () => void;
+  onDelete?: () => void;
 }
 export interface DeleteConfirmationProps {
   open: boolean;
