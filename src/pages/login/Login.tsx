@@ -26,8 +26,6 @@ import { Link as RouterLink } from "react-router";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [serverError, setServerError] = useState<string | null>(null);
-  console.log(serverError);
   const [loading, setLoading] = useState(false);
   const { signIn } = useAuth();
   const {
@@ -44,11 +42,9 @@ const Login = () => {
     try {
       const { error } = await signIn(data.email, data.password);
       if (error) {
-        setServerError("Error, revisa las credenciales");
         toast.error("Error, revisa las credenciales");
       }
     } catch (error) {
-      setServerError("algo salio mal");
       console.log(error);
       toast.error("algo salio mal");
     } finally {

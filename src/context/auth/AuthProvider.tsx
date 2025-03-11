@@ -56,11 +56,11 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 
   const signIn = async (email: string, password: string) => {
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
+      const { error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
-      console.log(data);
+
       return { error };
     } catch (error) {
       return { error: error as AuthError };
