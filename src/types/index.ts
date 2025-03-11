@@ -67,3 +67,14 @@ export interface DeleteConfirmationProps {
   onConfirm: () => Promise<void>;
   loading: boolean;
 }
+
+export interface EventStats {
+  totalEvents: number;
+  monthlyStats: { [key: string]: number };
+}
+
+export interface ChartItem {
+  name: string;
+  value: number;
+  fill: string;
+}
