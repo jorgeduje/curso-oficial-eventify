@@ -54,7 +54,7 @@ export interface EventFormValues {
 }
 export interface EventFormProps {
   open: boolean;
-  onclose: () => void;
+  onClose: () => void;
   onSubmit: (data: EventFormValues) => Promise<void>;
   form: UseFormReturn<EventFormValues>;
   isEditing: boolean;

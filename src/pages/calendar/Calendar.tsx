@@ -140,7 +140,7 @@ const Calendar = () => {
       <EventForm
         open={openForm}
         onSubmit={onSubmit}
-        onclose={handleCloseForm}
+        onClose={handleCloseForm}
         isEditing={!!currenEventId}
         loading={loading}
         form={form}
